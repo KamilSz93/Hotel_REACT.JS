@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 
-function SearchBar() {
+function SearchBar(props) {
+    
     const [term, setTerm] = useState('');
     
     const search = () => {
-        console.log("szukaj",  term)
+        props.onSearch(term);
     }
 
     return (
@@ -15,7 +16,7 @@ function SearchBar() {
                     setTerm(e.target.value);
                    // console.log(e.target.value)
                 }}
-                onKeyDown={(e)=>{e.key === "Enter" && search() }}
+                onKeyDown={(e)=>{e.key === "Enter" && props.onSearch(term) }}
                     className="form-control me-1"
                     type='text'
                     placeholder='Szukaj...'/>

@@ -3,38 +3,68 @@ import './App.css';
 import Header from './components/Header/header';
 import Menu from "./components/Menu/menu";
 import Hotels from './components/Hotels/hotels';
+import LoadingIcon from './components/UI/LoadingIcon/LoadingIcon'
 
 
 class App extends Component {
 
-    state = {
-      hotels: [
+  hotels = [
         {
           id: 1,
           name: "Pod akacjami",
           city: "Warszawa",
-          rating: "6.2",
+          rating: 6.2,
           description:
             "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
           image: ""
         },
         {
           id: 2,
-          name: "Pod debowy",
+          name: "Dębowy",
           city: "Lublin",
-          rating: "5.9",
+          rating: 5.9,
           description: "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
           image: ""
         },
       ]
+
+    state = {
+      hotels: [],
+      loading: true
     };
   
+  constructor(props) {
+    super(props)
+    console.log('component constructor')
+  }
+  
+  searchHandler(term) {
+    console.log('szukaj z app: ', term);
+    const hotels = [...this.state.hotels].filter(x => x.name.toLowerCase().includes(term.toLowerCase()));
+    this.setState({ hotels });
+  }
+
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ hotels: this.hotels })
+      this.setState({ loading: false })
+    }, 1000);
+    console.log('componnt zmontowany ')
+  }
+
+  componentDidUpdate() {
+    console.log('komponent zaktualizowano')
+  }
+  
   render() {
+    console.log('component wyrenderowany')
     return (
       <div className="App">
-        <Header />
+        <Header onSearch={(term)=> this.searchHandler(term)} />
         <Menu />
-        <Hotels hotels={this.state.hotels} />
+        {this.state.loading  ? (
+         < LoadingIcon /> ) : (
+          <Hotels hotels={this.state.hotels} />)}
       </div>
     );
   }
