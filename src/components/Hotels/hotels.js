@@ -18,6 +18,6 @@ class Hotels extends Component{
       }
 }
 
-Hotels.PropTypes = propTypes;
+Hotels.propTypes = propTypes;
 
 export default Hotels;

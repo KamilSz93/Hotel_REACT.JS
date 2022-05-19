@@ -4,6 +4,7 @@ import Header from './components/Header/header';
 import Menu from "./components/Menu/menu";
 import Hotels from './components/Hotels/hotels';
 import LoadingIcon from './components/UI/LoadingIcon/LoadingIcon'
+import SearchBar from './components/UI/SearchBar/searchBar'
 
 
 class App extends Component {
@@ -30,17 +31,18 @@ class App extends Component {
 
     state = {
       hotels: [],
-      loading: true
+      loading: true,
     };
   
   constructor(props) {
     super(props)
-    console.log('component constructor')
+   // console.log('component constructor')
   }
   
   searchHandler(term) {
-    console.log('szukaj z app: ', term);
-    const hotels = [...this.state.hotels].filter(x => x.name.toLowerCase().includes(term.toLowerCase()));
+    const hotels = [...this.state.hotels]
+      .filter(x => x.name.toLowerCase()
+        .includes(term.toLowerCase()));
     this.setState({ hotels });
   }
 
@@ -49,22 +51,24 @@ class App extends Component {
       this.setState({ hotels: this.hotels })
       this.setState({ loading: false })
     }, 1000);
-    console.log('componnt zmontowany ')
+    //console.log('componnt zmontowany ')
   }
 
-  componentDidUpdate() {
-    console.log('komponent zaktualizowano')
-  }
   
   render() {
-    console.log('component wyrenderowany')
+    //console.log('component wyrenderowany')
     return (
       <div className="App">
-        <Header onSearch={(term)=> this.searchHandler(term)} />
+        <Header>
+          <SearchBar onSearch={ term => this.searchHandler(term) }  />
+        </Header>
+
         <Menu />
-        {this.state.loading  ? (
-         < LoadingIcon /> ) : (
-          <Hotels hotels={this.state.hotels} />)}
+        {this.state.loading ? (
+          <LoadingIcon />
+        ) : (
+          <Hotels hotels={this.state.hotels} />
+        )}
       </div>
     );
   }

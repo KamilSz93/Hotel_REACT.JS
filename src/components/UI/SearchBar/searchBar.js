@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 function SearchBar(props) {
     
@@ -8,15 +8,21 @@ function SearchBar(props) {
         props.onSearch(term);
     }
 
+     const onKeyDownHandler = (e) => {
+       if (e.key === "Enter") {
+         search();
+       }
+     };
+
     return (
         <div className='d-flex'>
             <input
                 value={term}
                 onChange={(e) => {
                     setTerm(e.target.value);
-                   // console.log(e.target.value)
+                   //console.log(e.target.value)
                 }}
-                onKeyDown={(e)=>{e.key === "Enter" && props.onSearch(term) }}
+                onKeyDown={onKeyDownHandler}
                     className="form-control me-1"
                     type='text'
                     placeholder='Szukaj...'/>
