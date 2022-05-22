@@ -33,6 +33,7 @@ class App extends Component {
     state = {
       hotels: [],
       loading: true,
+      theme: "danger"
     };
   
   constructor(props) {
@@ -62,21 +63,31 @@ class App extends Component {
         <Layout
           header={
             <Header>
-                <SearchBar onSearch={ term => this.searchHandler(term) }  />
+            <SearchBar
+              onSearch={term => this.searchHandler(term)}
+              theme={this.state.theme}
+            />
         </Header>
           }
           menu={
-             <Menu />
+            <Menu
+               theme={this.state.theme}
+            />
           }
           content={
              this.state.loading ? (
-          <LoadingIcon />
+              <LoadingIcon
+                 theme={this.state.theme}
+              />
         ) : (
-          <Hotels hotels={this.state.hotels} />
+                <Hotels
+                  hotels={this.state.hotels}
+                  theme={this.state.theme}
+                />
         )}
       
           footer={
-            <Footer/>
+            <Footer theme={this.state.theme }/>
           }
         />
     );

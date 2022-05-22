@@ -28,7 +28,7 @@ function SearchBar(props) {
                     placeholder='Szukaj...'/>
             <button
                 onClick={search}
-                className='btn btn-primary'>
+                className={`btn btn-${props.theme}`}>
                 Szukaj
             </button>
         </div>

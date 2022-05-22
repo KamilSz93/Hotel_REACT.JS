@@ -30,7 +30,7 @@ function Hotel(props) {
                 <p>
                   <span className="badge bg-secondary">{props.rating}</span>
                 </p>
-                <a href="#" className="btn btn-primary float-end mt-2 px-5">
+                <a href="#" className={`btn btn-${props.theme} float-end mt-2 px-5`}>
                   Pokaz.
                 </a>
               </div>
