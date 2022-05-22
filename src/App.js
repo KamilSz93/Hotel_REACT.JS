@@ -7,8 +7,12 @@ import LoadingIcon from './components/UI/LoadingIcon/LoadingIcon'
 import SearchBar from './components/UI/SearchBar/searchBar'
 import Layout from './components/Layout/layout'
 import Footer from './components/Footer/footer'
+import ButtonTheme from './components/UI/ButtonTheme/buttonTheme';
+import ThemeContext from './context/themeContext';
+
 
 class App extends Component {
+  static contextType = ThemeContext;
 
   hotels = [
         {
@@ -38,9 +42,8 @@ class App extends Component {
   
   constructor(props) {
     super(props)
-   // console.log('component constructor')
   }
-  
+
   searchHandler(term) {
     const hotels = [...this.state.hotels]
       .filter(x => x.name.toLowerCase()
@@ -56,40 +59,41 @@ class App extends Component {
     //console.log('componnt zmontowany ')
   }
 
+  changeTheme = () => { //tutaj musi byc funkcja strzalkowa innaczej nie zadziala 
+    const newTheme =( this.state.theme === 'primary' ) ? 'danger' : 'primary'
+    this.setState({ theme: newTheme });
+  }
+
   
   render() {
-    //console.log('component wyrenderowany')
+    const header = (<Header>
+      <SearchBar
+        onSearch={(term) => this.searchHandler(term)} />
+      <ButtonTheme />
+    </Header>);
+    
+    const menu = <Menu />;
+
+    const content = (this.state.loading ? (
+            <LoadingIcon />
+          ) : (
+            <Hotels hotels={this.state.hotels} />
+    ));
+    
+    const footer = <Footer />;
+
     return (
+      <ThemeContext.Provider value={{
+        theme: this.state.theme,
+        onChange: this.changeTheme
+    }}>
         <Layout
-          header={
-            <Header>
-            <SearchBar
-              onSearch={term => this.searchHandler(term)}
-              theme={this.state.theme}
-            />
-        </Header>
-          }
-          menu={
-            <Menu
-               theme={this.state.theme}
-            />
-          }
-          content={
-             this.state.loading ? (
-              <LoadingIcon
-                 theme={this.state.theme}
-              />
-        ) : (
-                <Hotels
-                  hotels={this.state.hotels}
-                  theme={this.state.theme}
-                />
-        )}
-      
-          footer={
-            <Footer theme={this.state.theme }/>
-          }
+          header={header}
+          menu={menu}
+          content={content}
+          footer={footer}
         />
+    </ThemeContext.Provider>
     );
   }
 }
