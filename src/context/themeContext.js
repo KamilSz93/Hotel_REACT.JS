@@ -3,7 +3,7 @@ import React from 'react';
 const ThemeContext = React.createContext(
     {
         theme: 'primary',
-        onChange: () => { },
+        changeTheme: () => { },
 
     }
 );
