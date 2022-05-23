@@ -4,14 +4,20 @@ import styles from './header.module.css';
 import widthMousePosition from '../../hoc/withMousePosition';
 
 function Header(props) {
-    return (
-      <header className={`${styles.header} container position-relative`}>
-        <div className='text-light'>
-          {props.mouseX}<br></br>
-          {props.mouseY}
-        </div>
 
-        {props.children}
+  const paralaxStyles = {
+    transform: `translate(
+        ${props.mouseX / -20}px,
+        ${props.mouseY / 120}px
+      )`
+  };
+
+    return (
+      <header className={`${styles.header}`}>
+        <div
+          className={styles.headerImage}
+          style={paralaxStyles}></div>
+          {props.children}
       </header>
     );
 }
