@@ -19,8 +19,6 @@ const widthMousePosition = (WrapperComponent) => {
                 x: e.pageX, 
                 y: e.pageY
             })
-            console.log(e)
-           
         }
 
         render() {
