@@ -8,11 +8,11 @@ const stylesButton = {
 };
 
 function ButtonTheme(props) {
-  const theme = useContext(ThemeContext);
+  const color = useContext(ThemeContext);
 
   return (
         <button style={stylesButton}
-          onClick={theme.changeTheme}>
+          onClick={color.changeTheme}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="25"

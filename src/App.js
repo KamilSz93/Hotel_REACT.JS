@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/Header/header';
 import Menu from "./components/Menu/menu";
@@ -11,93 +11,75 @@ import ButtonTheme from './components/UI/ButtonTheme/buttonTheme';
 import ThemeContext from './context/themeContext';
 import AuthContext from './context/authContext';
 
+const backendHotels = [
+  {
+    id: 1,
+    name: "Pod akacjami",
+    city: "Warszawa",
+    rating: 6.2,
+    description:
+      "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
+    image: "",
+  },
+  {
+    id: 2,
+    name: "Dębowy",
+    city: "Lublin",
+    rating: 5.9,
+    description:
+      "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
+    image: "",
+  },
+];
 
-class App extends Component {
-  static contextType = ThemeContext;
+function App() {
 
-  hotels = [
-    {
-      id: 1,
-      name: "Pod akacjami",
-      city: "Warszawa",
-      rating: 6.2,
-      description:
-        "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
-      image: "",
-    },
-    {
-      id: 2,
-      name: "Dębowy",
-      city: "Lublin",
-      rating: 5.9,
-      description:
-        "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
-      image: "",
-    },
-  ];
+  const [hotels, setHotels] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState("danger");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  state = {
-    hotels: [],
-    loading: true,
-    theme: "danger",
-    isAuthenticated: false,
-  };
-
-  constructor(props) {
-    super(props);
+  const changeTheme = () => {
+    const newTheme = theme === 'primary' ? 'danger' : 'primary';
+    setTheme(newTheme);
   }
 
-  searchHandler(term) {
-    const hotels = [...this.state.hotels].filter((x) =>
+  const searchHandler = (term) => {
+    const newHotels = [...backendHotels].filter((x) =>
       x.name.toLowerCase().includes(term.toLowerCase())
     );
-    this.setState({ hotels });
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({ hotels: this.hotels });
-      this.setState({ loading: false });
-    }, 1000);
-    //console.log('componnt zmontowany ')
-  }
-
-  changeTheme = () => {
-    //tutaj musi byc funkcja strzalkowa innaczej nie zadziala
-    const newTheme = this.state.theme === "primary" ? "danger" : "primary";
-    this.setState({ theme: newTheme });
+    setHotels(newHotels);
   };
 
-  render() {
-    const header = (
-      <Header>
-        <SearchBar onSearch={(term) => this.searchHandler(term)} />
-        <ButtonTheme />
-      </Header>
-    );
+   useEffect(() => {
+     setTimeout(() => {
+       setHotels(backendHotels);
+       setLoading(false);
+     }, 1000);
+   }, []);
 
-    const menu = <Menu />;
+   const header = (
+     <Header>
+       <SearchBar onSearch={(term) => searchHandler(term)} />
+       <ButtonTheme />
+     </Header>
+   );
+   const content = loading ? <LoadingIcon /> : <Hotels hotels={hotels} />;
+   const menu = <Menu />;
+   const footer = <Footer />;
 
-    const content = this.state.loading ? (
-      <LoadingIcon />
-    ) : (
-      <Hotels hotels={this.state.hotels} />
-    );
-
-    const footer = <Footer />;
-
-    return (
-      <AuthContext.Provider
+  return (
+     <AuthContext.Provider
         value={{
-          isAuthenticated: this.state.isAuthenticated,
-          login: () => this.setState({ isAuthenticated: true }),
-          logout: () => this.setState({ isAuthenticated: false }),
+          isAuthenticated: isAuthenticated,
+          login:()=> setIsAuthenticated(true),
+          logout:()=> setIsAuthenticated(false),
         }}
       >
         <ThemeContext.Provider
           value={{
-            theme: this.state.theme,
-            changeTheme: this.changeTheme,
+            theme: theme,
+            changeTheme: changeTheme,
           }}
         >
           <Layout
@@ -108,8 +90,7 @@ class App extends Component {
           />
         </ThemeContext.Provider>
       </AuthContext.Provider>
-    );
-  }
+  )
 }
 
 export default App;
