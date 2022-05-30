@@ -11,12 +11,11 @@ const propTypes = {
   description: PropTypes.string.isRequired,
 };
 
-
 function Hotel(props) {
    
-  const color = useContext(ThemeContext)
+const theme = useContext(ThemeContext)
 
-  return (
+return (
     <div className={`card ${styles.hotel}`}>
       <div className="card-body">
         <div className="row">
@@ -35,7 +34,7 @@ function Hotel(props) {
                   <span className="badge bg-secondary">{props.rating}</span>
                 </p>
                     <a href="#"
-                      className={`btn btn-${color.theme} float-end mt-2 px-5`} >
+                      className={`btn btn-${theme.color} float-end mt-2 px-5`} >
                       Pokaz.
                     </a>
               </div>

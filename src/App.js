@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import './App.css';
 import Header from './components/Header/header';
 import Menu from "./components/Menu/menu";
@@ -10,6 +10,7 @@ import Footer from './components/Footer/footer'
 import ButtonTheme from './components/UI/ButtonTheme/buttonTheme';
 import ThemeContext from './context/themeContext';
 import AuthContext from './context/authContext';
+import BestHotels from './components/Hotels/BestHotels/bestHotels';
 
 const backendHotels = [
   {
@@ -32,29 +33,69 @@ const backendHotels = [
   },
 ];
 
-function App() {
-
-  const [hotels, setHotels] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [theme, setTheme] = useState("danger");
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const changeTheme = () => {
-    const newTheme = theme === 'primary' ? 'danger' : 'primary';
-    setTheme(newTheme);
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "change-theme":
+      const theme = state.theme === "danger" ? "primary" : "danger";
+      return {
+        ...state, theme};
+    case "set-hotels":
+      return { ...state, hotels: action.hotels };
+    case "set-loading":
+      return { ...state, loading: action.loading };
+    case "login":
+      return { ...state, isAuthenticated: true };
+    case "logout":
+      return { ...state, isAuthenticated: false };
+    default:
+      throw new Error("nie ma tekiej akcji:" + action.type);
   }
+  //return state;
+};
+
+const initialState = {
+  theme: 'danger',
+  hotels: [],
+  loading: true,
+  isAuthenticated: false,
+} 
+
+function App() { 
+ // const [hotels, setHotels] = useState([]);
+  //const [loading, setLoading] = useState(true);
+  //const [isAuthenticated, setIsAuthenticated] = useState(false);
+  //const [theme, setTheme] = useState("danger");
+  const [state, dispath] = useReducer(reducer, initialState);
+
+ // const changeTheme = () => {
+    //const newTheme = theme === 'primary' ? 'danger' : 'primary';
+    //setTheme(newTheme);
+ // }
 
   const searchHandler = (term) => {
     const newHotels = [...backendHotels].filter((x) =>
       x.name.toLowerCase().includes(term.toLowerCase())
     );
-    setHotels(newHotels);
+   // setHotels(newHotels);
+    dispath({ type: 'set-hotels', hotels: newHotels });
   };
+
+  const getBestHotel = () => {
+    if (state.hotels.length < 2) {
+      return null;
+    } else {
+      return state.hotels.sort((a, b) => a.rating > b.rating ? -1 : 1)
+      [0];
+    }
+  }
+  
 
    useEffect(() => {
      setTimeout(() => {
-       setHotels(backendHotels);
-       setLoading(false);
+       //setHotels(backendHotels);
+       //setLoading(false);
+       dispath({ type: 'set-hotels', hotels: backendHotels });
+       dispath({ type: 'set-loading', loading: false });
      }, 1000);
    }, []);
 
@@ -64,33 +105,39 @@ function App() {
        <ButtonTheme />
      </Header>
    );
-   const content = loading ? <LoadingIcon /> : <Hotels hotels={hotels} />;
-   const menu = <Menu />;
-   const footer = <Footer />;
+  const content = state.loading ? (
+    <LoadingIcon />
+  ) : (
+    <>
+      <BestHotels getHotel={getBestHotel} />
+      <Hotels hotels={state.hotels} />;
+    </>
+  );
+  const menu = <Menu />;
+  const footer = <Footer />;
 
   return (
-     <AuthContext.Provider
+    <AuthContext.Provider
+      value={{
+        isAuthenticated: state.isAuthenticated,
+        login: () => dispath({ type: 'login' }),
+        logout: () => dispath({ type: 'logout' }),
+      }}
+    >
+      <ThemeContext.Provider
         value={{
-          isAuthenticated: isAuthenticated,
-          login:()=> setIsAuthenticated(true),
-          logout:()=> setIsAuthenticated(false),
+          color: state.theme,
+          changeTheme: () => dispath({ type: "change-theme" }),
         }}
       >
-        <ThemeContext.Provider
-          value={{
-            theme: theme,
-            changeTheme: changeTheme,
-          }}
-        >
-          <Layout
-            header={header}
-            menu={menu}
-            content={content}
-            footer={footer}
-          />
-        </ThemeContext.Provider>
-      </AuthContext.Provider>
-  )
+        <Layout
+          header={header}
+          menu={menu}
+          content={content}
+          footer={footer} />
+      </ThemeContext.Provider>
+    </AuthContext.Provider>
+  );
 }
 
 export default App;

@@ -3,7 +3,7 @@ import ThemeContext from '../../../context/themeContext';
 
 function SearchBar(props) {
 
-  const color = useContext(ThemeContext);
+  const theme = useContext(ThemeContext);
     
   const [term, setTerm] = useState('');
 
@@ -42,7 +42,7 @@ function SearchBar(props) {
           placeholder="Szukaj..."
         />
              <button onClick={search}
-                     className={`btn btn-${color.theme}`}>
+                     className={`btn btn-${theme.color}`}>
                      Szukaj
             </button>
       </div>
