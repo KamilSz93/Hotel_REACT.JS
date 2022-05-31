@@ -11,6 +11,7 @@ import ButtonTheme from './components/UI/ButtonTheme/buttonTheme';
 import ThemeContext from './context/themeContext';
 import AuthContext from './context/authContext';
 import BestHotels from './components/Hotels/BestHotels/bestHotels';
+import InsporingQuote from './components/InsporingQuote/insporingQuote';
 
 const backendHotels = [
   {
@@ -89,7 +90,6 @@ function App() {
     }
   }
   
-
    useEffect(() => {
      setTimeout(() => {
        //setHotels(backendHotels);
@@ -101,6 +101,7 @@ function App() {
 
    const header = (
      <Header>
+       <InsporingQuote />
        <SearchBar onSearch={(term) => searchHandler(term)} />
        <ButtonTheme />
      </Header>
@@ -109,7 +110,7 @@ function App() {
     <LoadingIcon />
   ) : (
     <>
-      <BestHotels getHotel={getBestHotel} />
+      { getBestHotel() ? <BestHotels getHotel={getBestHotel} /> : null }
       <Hotels hotels={state.hotels} />;
     </>
   );
