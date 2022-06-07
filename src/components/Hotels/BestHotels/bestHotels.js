@@ -16,7 +16,6 @@ const BestHotels = (props) => {
             const leftMinutes = Math.floor(leftTime / 60)
             const leftSeconds = Math.floor(leftTime % 60)
             setTime(`minut: ${leftMinutes} sekund: ${leftSeconds}`)
-            console.log(leftTime);
         }, 1000);
 
         return () => {

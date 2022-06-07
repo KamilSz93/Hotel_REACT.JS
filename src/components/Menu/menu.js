@@ -1,19 +1,22 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import styles from './menu.module.css'
-import AuthContext from '../../context/authContext';
+import useAuth from '../../hooks/useAuth';
 
 function Menu() {
 
-    const auth = useContext(AuthContext);
+   // const auth = useContext(AuthContext);
+  const [auth, setAuth] = useAuth();
 
     const login = (e) => {
         e.preventDefault();
-        auth.login(); 
+       // auth.login(); 
+      setAuth(true)
     }
 
     const logout = (e) => {
       e.preventDefault();
-      auth.logout();
+     // auth.logout();
+      setAuth(false)
     };
 
     return (
@@ -22,7 +25,7 @@ function Menu() {
           <li className={styles.menuItems}>
             <a href="#">Home </a>
           </li>
-          {auth.isAuthenticated ? (
+          {auth ? (
             <li className={styles.menuItems}>
               <a href="#" onClick={logout}>Wyloguj</a>
             </li>

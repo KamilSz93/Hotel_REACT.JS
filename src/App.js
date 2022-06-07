@@ -12,6 +12,7 @@ import ThemeContext from './context/themeContext';
 import AuthContext from './context/authContext';
 import BestHotels from './components/Hotels/BestHotels/bestHotels';
 import InsporingQuote from './components/InsporingQuote/insporingQuote';
+import useStateStorage from './hooks/useStateStorage';
 
 const backendHotels = [
   {
@@ -58,7 +59,7 @@ const initialState = {
   theme: 'danger',
   hotels: [],
   loading: true,
-  isAuthenticated: false,
+  isAuthenticated: true,
 } 
 
 function App() { 
@@ -68,6 +69,7 @@ function App() {
   //const [theme, setTheme] = useState("danger");
   const [state, dispath] = useReducer(reducer, initialState);
 
+  const [storage, setStorage] = useStateStorage('klucz','wartosc startowa' ) 
  // const changeTheme = () => {
     //const newTheme = theme === 'primary' ? 'danger' : 'primary';
     //setTheme(newTheme);
@@ -109,7 +111,8 @@ function App() {
   const content = state.loading ? (
     <LoadingIcon />
   ) : (
-    <>
+      <>
+        {storage}
       { getBestHotel() ? <BestHotels getHotel={getBestHotel} /> : null }
       <Hotels hotels={state.hotels} />;
     </>
