@@ -13,6 +13,9 @@ import AuthContext from './context/authContext';
 import BestHotels from './components/Hotels/BestHotels/bestHotels';
 import InsporingQuote from './components/InsporingQuote/insporingQuote';
 import LastHotel from './components/Hotels/LastHotel/lastHotel';
+import useStateStorage from './hooks/useStateStorage';
+import useWebsiteTitle from './hooks/useWebsiteTitle';
+
 
 const backendHotels = [
   {
@@ -69,10 +72,17 @@ function App() {
   //const [theme, setTheme] = useState("danger");
   const [state, dispath] = useReducer(reducer, initialState);
 
- // const changeTheme = () => {
-    //const newTheme = theme === 'primary' ? 'danger' : 'primary';
-    //setTheme(newTheme);
- // }
+  const [lastHotel, setLastHotel] = useStateStorage('Last Hotel', null);
+ 
+  useWebsiteTitle('Strona główna')
+  
+  const openHotel = (hotel) => {
+    setLastHotel(hotel)
+  }
+
+  const removeLastHotel = () => {
+    setLastHotel(null);
+  }
 
   const searchHandler = (term) => {
     const newHotels = [...backendHotels].filter((x) =>
@@ -111,9 +121,12 @@ function App() {
     <LoadingIcon />
   ) : (
       <>
-       <LastHotel/>
+        {lastHotel ? (<LastHotel {...lastHotel} onRemove={removeLastHotel}  />) :
+                      (null) }
       { getBestHotel() ? <BestHotels getHotel={getBestHotel} /> : null }
-      <Hotels hotels={state.hotels} />;
+        <Hotels
+          onOpen={openHotel}
+          hotels={state.hotels} />;
     </>
   );
   const menu = <Menu />;

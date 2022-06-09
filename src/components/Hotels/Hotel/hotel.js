@@ -18,6 +18,11 @@ function Hotel(props) {
    
   const theme = useContext(ThemeContext)
 
+  const clickHandler = (e) => {
+    e.preventDefault();
+    props.onOpen(props)
+  }
+
 return (
   <div className={`card ${styles.hotel}`}>
     <div className="card-body">
@@ -37,6 +42,7 @@ return (
                 <span className="badge bg-secondary">{props.rating}</span>
               </p>
               <a
+                onClick={clickHandler}
                 href="#"
                 className={`btn btn-${theme.color} float-end mt-2 px-5`}
               >
