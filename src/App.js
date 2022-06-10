@@ -74,7 +74,7 @@ function App() {
 
   const [lastHotel, setLastHotel] = useStateStorage('Last Hotel', null);
  
-  useWebsiteTitle('Strona główna')
+  useWebsiteTitle('Strona')
   
   const openHotel = (hotel) => {
     setLastHotel(hotel)
