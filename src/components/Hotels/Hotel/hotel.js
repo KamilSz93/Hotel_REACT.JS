@@ -4,6 +4,7 @@ import styles from './hotel.module.css';
 import hotelImg from '../../../assets/images/hotel.jpg';
 import ThemeContext from '../../../context/themeContext';
 import useAuth from '../../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 const propTypes = {
   name: PropTypes.string.isRequired,
@@ -19,7 +20,7 @@ function Hotel(props) {
   const theme = useContext(ThemeContext)
 
   const clickHandler = (e) => {
-    e.preventDefault();
+   // e.preventDefault();
     props.onOpen(props)
   }
 
@@ -41,13 +42,16 @@ return (
               <p>
                 <span className="badge bg-secondary">{props.rating}</span>
               </p>
-              <a
+              <Link to={`/hotel/${props.id}`} >
+                    Pokaż
+                </Link>
+              {/*<a
                 onClick={clickHandler}
-                href="#"
+                href="/hotel/idqqqqqq"
                 className={`btn btn-${theme.color} float-end mt-2 px-5`}
               >
                 Pokaz.
-              </a>
+              </a>*/}
             </div>
           </div>
         </div>

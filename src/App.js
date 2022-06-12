@@ -1,4 +1,5 @@
 import React, { useEffect, useReducer, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header/header';
 import Menu from "./components/Menu/menu";
@@ -15,7 +16,7 @@ import InsporingQuote from './components/InsporingQuote/insporingQuote';
 import LastHotel from './components/Hotels/LastHotel/lastHotel';
 import useStateStorage from './hooks/useStateStorage';
 import useWebsiteTitle from './hooks/useWebsiteTitle';
-
+import { reducer, initialState } from './reducer';
 
 const backendHotels = [
   {
@@ -38,32 +39,7 @@ const backendHotels = [
   },
 ];
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "change-theme":
-      const theme = state.theme === "danger" ? "primary" : "danger";
-      return {
-        ...state, theme};
-    case "set-hotels":
-      return { ...state, hotels: action.hotels };
-    case "set-loading":
-      return { ...state, loading: action.loading };
-    case "login":
-      return { ...state, isAuthenticated: true };
-    case "logout":
-      return { ...state, isAuthenticated: false };
-    default:
-      throw new Error("nie ma tekiej akcji:" + action.type);
-  }
-  //return state;
-};
 
-const initialState = {
-  theme: 'danger',
-  hotels: [],
-  loading: true,
-  isAuthenticated: true,
-} 
 
 function App() { 
  // const [hotels, setHotels] = useState([]);
@@ -116,43 +92,54 @@ function App() {
        <SearchBar onSearch={(term) => searchHandler(term)} />
        <ButtonTheme />
      </Header>
-   );
-  const content = state.loading ? (
-    <LoadingIcon />
-  ) : (
-      <>
-        {lastHotel ? (<LastHotel {...lastHotel} onRemove={removeLastHotel}  />) :
-                      (null) }
-      { getBestHotel() ? <BestHotels getHotel={getBestHotel} /> : null }
-        <Hotels
-          onOpen={openHotel}
-          hotels={state.hotels} />;
+  );
+
+  const lastHotels = (  <div>
+                     { lastHotel ? (
+                       <LastHotel {...lastHotel} onRemove={removeLastHotel} />
+                       ) : null }
+                       { getBestHotel() ? <BestHotels getHotel={getBestHotel} /> : null }
+                       <Hotels onOpen={openHotel} hotels={state.hotels} />
+                     </div>  )
+  
+  const content = (
+    <>
+      <Routes>
+        <Route  exact={true} path="/" element={lastHotels} />
+      </Routes>
+
+      <Routes>
+        <Route path="/hotel/:id" element={ <h1>To jest jakis hotel</h1>} />
+      </Routes>
     </>
   );
   const menu = <Menu />;
   const footer = <Footer />;
 
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated: state.isAuthenticated,
-        login: () => dispath({ type: 'login' }),
-        logout: () => dispath({ type: 'logout' }),
-      }}
-    >
-      <ThemeContext.Provider
+    <Router>
+      <AuthContext.Provider
         value={{
-          color: state.theme,
-          changeTheme: () => dispath({ type: "change-theme" }),
+          isAuthenticated: state.isAuthenticated,
+          login: () => dispath({ type: "login" }),
+          logout: () => dispath({ type: "logout" }),
         }}
       >
-        <Layout
-          header={header}
-          menu={menu}
-          content={content}
-          footer={footer} />
-      </ThemeContext.Provider>
-    </AuthContext.Provider>
+        <ThemeContext.Provider
+          value={{
+            color: state.theme,
+            changeTheme: () => dispath({ type: "change-theme" }),
+          }}
+        >
+          <Layout
+            header={header}
+            menu={menu}
+            content={state.loading ? <LoadingIcon /> : content}
+            footer={footer}
+          />
+        </ThemeContext.Provider>
+      </AuthContext.Provider>
+    </Router>
   );
 }
 
