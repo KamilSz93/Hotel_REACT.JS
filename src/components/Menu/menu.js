@@ -1,21 +1,19 @@
 import React from 'react'
 import styles from './menu.module.css'
 import useAuth from '../../hooks/useAuth';
+import { Link } from 'react-router-dom';
 
 function Menu() {
 
-   // const auth = useContext(AuthContext);
   const [auth, setAuth] = useAuth();
 
     const login = (e) => {
-        e.preventDefault();
-       // auth.login(); 
+        e.preventDefault(); 
       setAuth(true)
     }
 
     const logout = (e) => {
       e.preventDefault();
-     // auth.logout();
       setAuth(false)
     };
 
@@ -23,7 +21,7 @@ function Menu() {
       <div className={`${styles.menuContainer} breadcrumb`}>
         <ul className={styles.menu}>
           <li className={styles.menuItems}>
-            <a href="#">Home </a>
+            <Link to="/"> Home </Link>
           </li>
           {auth ? (
             <li className={styles.menuItems}>

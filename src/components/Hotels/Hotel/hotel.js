@@ -42,13 +42,15 @@ return (
               <p>
                 <span className="badge bg-secondary">{props.rating}</span>
               </p>
-              <Link to={`/hotel/${props.id}`} >
-                    Pokaż
-                </Link>
+              <Link
+                className={`btn btn-${theme.color} float-end mt-2 px-5`}
+                to={`/hotel/${props.id}`}
+              >
+                Pokaż
+              </Link>
               {/*<a
                 onClick={clickHandler}
                 href="/hotel/idqqqqqq"
-                className={`btn btn-${theme.color} float-end mt-2 px-5`}
               >
                 Pokaz.
               </a>*/}
@@ -59,11 +61,11 @@ return (
         <div className="col-12">
           <p className={styles.description}>{props.description}</p>
         </div>
-        {
-          auth ?
-            (<p className='mt-2'>Pokaz szczegóły</p>) :
-            (<p className='mt-2'>Zaloguj sie</p>)
-        }
+        {auth ? (
+          <p className="mt-2">Pokaz szczegóły</p>
+        ) : (
+          <p className="mt-2">Zaloguj sie</p>
+        )}
       </div>
     </div>
   </div>
