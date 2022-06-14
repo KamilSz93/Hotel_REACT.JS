@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, {useState, useEffect, useContext } from "react";
 import LastHotel from "../../components/Hotels/LastHotel/lastHotel";
 import useStateStorage from "../../hooks/useStateStorage";
 import useWebsiteTitle from "../../hooks/useWebsiteTitle";
@@ -33,36 +33,36 @@ export default function Home(props) {
   const [lastHotel, setLastHotel] = useStateStorage("Last Hotel", null);
   const reducer = useContext(ReducerContext);
 
+  const [loading, setLoading] = useState(true);
+  const [hotels, setHotels] = useState([]);
+
   useWebsiteTitle("Strona");
 
   const getBestHotel = () => {
-    if (reducer.state.hotels.length < 2) {
+    if (hotels.length < 2) {
       return null;
     } else {
-      return reducer.state.hotels.sort((a, b) => (a.rating > b.rating ? -1 : 1))[0];
+      return hotels.sort((a, b) => (a.rating > b.rating ? -1 : 1))[0];
     }
   };
 
   const openHotel = (hotel) => setLastHotel(hotel);
-
   const removeLastHotel = () => setLastHotel(null);
 
   useEffect(() => {
     setTimeout(() => {
-      reducer.dispath({ type: "set-hotels", hotels: backendHotels });
-      reducer.dispath({ type: "set-loading", loading: false });
+      setHotels(backendHotels);
+      setLoading(false);
     }, 1000);
   }, []);
 
-  if (reducer.state.loading) return null;
-
-  return (
+  return loading ? <LoadingIcon/> : (
     <>
       {lastHotel ? (
         <LastHotel {...lastHotel} onRemove={removeLastHotel} />
       ) : null}
       {getBestHotel() ? <BestHotels getHotel={getBestHotel} /> : null}
-      <Hotels onOpen={openHotel} hotels={reducer.state.hotels} />
+      <Hotels onOpen={openHotel} hotels={hotels} />
     </>
   );
 }

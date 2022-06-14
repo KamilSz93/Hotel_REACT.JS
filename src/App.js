@@ -14,43 +14,17 @@ import InsporingQuote from './components/InsporingQuote/insporingQuote';
 import { reducer, initialState } from './reducer';
 import Home from './pages/Home/home';
 import Hotel from './pages/Hotel/hotel';
-import LoadingIcon from './components/UI/LoadingIcon/LoadingIcon';
-
-const backendHotels = [
-  {
-    id: 1,
-    name: "Pod akacjami",
-    city: "Warszawa",
-    rating: 6.2,
-    description:
-      "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
-    image: "",
-  },
-  {
-    id: 2,
-    name: "Dębowy",
-    city: "Lublin",
-    rating: 5.9,
-    description:
-      "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
-    image: "",
-  },
-];
+import Search from './pages/Search/search';
+import Profil from './pages/Profil/profil';
+import NotFound from './pages/404/404';
 
 function App() { 
   const [state, dispath] = useReducer(reducer, initialState);
 
-  const searchHandler = (term) => {
-    const newHotels = [...backendHotels].filter((x) =>
-      x.name.toLowerCase().includes(term.toLowerCase())
-    );
-    dispath({ type: 'set-hotels', hotels: newHotels });
-  };
-
    const header = (
      <Header>
        <InsporingQuote />
-       <SearchBar onSearch={(term) => searchHandler(term)} />
+       <SearchBar />
        <ButtonTheme />
      </Header>
   );
@@ -62,11 +36,23 @@ function App() {
           <Hotel/>
         </Route>
 
-        <Route path="/">
+        <Route path="/wyszukaj/:term?">
+           <Search/>
+        </Route>
+
+        <Route path="/profil">
+          <Profil/>
+        </Route>
+
+        <Route path="/" exact>
           <Home />
         </Route>
-        </Switch>
-           {state.loading ? <LoadingIcon/> : null}
+
+        <Route>
+          <NotFound/>
+        </Route>
+      </Switch>
+          
     </div>
   );
   const menu = <Menu />;
