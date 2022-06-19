@@ -1,5 +1,5 @@
 import { useReducer } from 'react';
-import { BrowserRouter as Router, Route, Routes, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header/header';
 import Menu from "./components/Menu/menu";
@@ -17,6 +17,9 @@ import Hotel from './pages/Hotel/hotel';
 import Search from './pages/Search/search';
 import Profil from './pages/Profil/profil';
 import NotFound from './pages/404/404';
+import Login from './pages/Auth/Login/login';
+import AuthenticatedRoute from './components/AuthenticatedRoute/authenticatedRoute';
+import ErrorBoundary from './hoc/errorBoundary';
 
 function App() { 
   const [state, dispath] = useReducer(reducer, initialState);
@@ -29,19 +32,21 @@ function App() {
      </Header>
   );
 
-  const content = (
+  const content = 
     <div>
       <Switch>
+        <AuthenticatedRoute path="/profil" component={Profil} />
+          
         <Route path="/hotel/:id">
-          <Hotel/>
+          <Hotel />
         </Route>
 
         <Route path="/wyszukaj/:term?">
-           <Search/>
+          <Search />
         </Route>
 
-        <Route path="/profil">
-          <Profil/>
+        <Route path="/zaloguj">
+          <Login />
         </Route>
 
         <Route path="/" exact>
@@ -49,12 +54,11 @@ function App() {
         </Route>
 
         <Route>
-          <NotFound/>
+          <NotFound />
         </Route>
       </Switch>
-          
     </div>
-  );
+  
   const menu = <Menu />;
   const footer = <Footer />;
 
@@ -77,12 +81,15 @@ function App() {
             state: state,
             dispath:dispath,
           }}>
-            <Layout
-              header={header}
-              menu={menu}
-              content={content}
-              footer={footer}
-            />
+            <ErrorBoundary>
+              <Layout
+                header={header}
+                menu={menu}
+                content={content}
+                footer={footer}
+              />
+            </ErrorBoundary>
+            
           </ReducerContext.Provider>
         </ThemeContext.Provider>
       </AuthContext.Provider>

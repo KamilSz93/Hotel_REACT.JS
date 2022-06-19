@@ -5,7 +5,7 @@ export default function ProfileDetails(props) {
         <label>Email</label>
         <input
           type="email"
-          value="adam@tworcastron.pl"
+          defaultValue="adam@tworcastron.pl"
           className="form-control"
         />
       </div>
