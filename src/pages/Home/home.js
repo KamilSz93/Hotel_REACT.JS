@@ -36,7 +36,7 @@ export default function Home(props) {
   const [loading, setLoading] = useState(true);
   const [hotels, setHotels] = useState([]);
 
-  useWebsiteTitle("Strona");
+  useWebsiteTitle("Strona główna");
 
   const getBestHotel = () => {
     if (hotels.length < 2) {
@@ -58,9 +58,8 @@ export default function Home(props) {
 
   return loading ? <LoadingIcon/> : (
     <>
-      {lastHotel ? (
-        <LastHotel {...lastHotel} onRemove={removeLastHotel} />
-      ) : null}
+      { lastHotel ? <LastHotel {...lastHotel} onRemove={removeLastHotel} />
+       : null }
       {getBestHotel() ? <BestHotels getHotel={getBestHotel} /> : null}
       <Hotels onOpen={openHotel} hotels={hotels} />
     </>

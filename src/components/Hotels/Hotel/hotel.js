@@ -39,21 +39,14 @@ return (
               <span className="badge bg-light text-dark">{props.city}</span>
             </div>
             <div className="col text-end">
-              <p>
-                <span className="badge bg-secondary">{props.rating}</span>
-              </p>
-              <Link
-                className={`btn btn-${theme.color} float-end mt-2 px-5`}
-                to={`/hotel/${props.id}`}
-              >
-                Pokaż
-              </Link>
-              {/*<a
-                onClick={clickHandler}
-                href="/hotel/idqqqqqq"
-              >
-                Pokaz.
-              </a>*/}
+              <h5>Ocena: {props.rating}</h5>
+              
+             <Link 
+                    onClick={clickHandler}
+                    to={`/hotele/${props.id}`}
+                    className={`btn btn-${theme.color} mt-2 px-4`}>
+                    Pokaż
+                  </Link>
             </div>
           </div>
         </div>

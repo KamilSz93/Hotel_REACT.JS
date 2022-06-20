@@ -1,5 +1,6 @@
 import  { useState }  from 'react'
 import useStateStorage from '../../../hooks/useStateStorage';
+import {Link} from 'react-router-dom'
 
 function LastHotel(props) {
 

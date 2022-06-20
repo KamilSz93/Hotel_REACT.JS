@@ -22,6 +22,8 @@ import AuthenticatedRoute from './components/AuthenticatedRoute/authenticatedRou
 import ErrorBoundary from './hoc/errorBoundary';
 
 function App() { 
+
+
   const [state, dispath] = useReducer(reducer, initialState);
 
    const header = (
@@ -37,7 +39,7 @@ function App() {
       <Switch>
         <AuthenticatedRoute path="/profil" component={Profil} />
           
-        <Route path="/hotel/:id">
+        <Route path="/hotele/:id">
           <Hotel />
         </Route>
 
@@ -89,7 +91,6 @@ function App() {
                 footer={footer}
               />
             </ErrorBoundary>
-            
           </ReducerContext.Provider>
         </ThemeContext.Provider>
       </AuthContext.Provider>
