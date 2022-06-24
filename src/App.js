@@ -20,6 +20,7 @@ import NotFound from './pages/404/404';
 import Login from './pages/Auth/Login/login';
 import AuthenticatedRoute from './components/AuthenticatedRoute/authenticatedRoute';
 import ErrorBoundary from './hoc/errorBoundary';
+import MyHotels from './pages/Profil/MyHotels/myHotels';
 
 function App() { 
 
@@ -41,6 +42,10 @@ function App() {
           
         <Route path="/hotele/:id">
           <Hotel />
+        </Route>
+
+        <Route path='/profil/hotele/dodaj'>
+          <MyHotels />
         </Route>
 
         <Route path="/wyszukaj/:term?">
