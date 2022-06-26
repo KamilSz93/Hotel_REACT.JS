@@ -20,7 +20,7 @@ import NotFound from './pages/404/404';
 import Login from './pages/Auth/Login/login';
 import AuthenticatedRoute from './components/AuthenticatedRoute/authenticatedRoute';
 import ErrorBoundary from './hoc/errorBoundary';
-import MyHotels from './pages/Profil/MyHotels/myHotels';
+import AddHotel from './pages/Profil/MyHotels/AddHotel/addHotel';
 
 function App() { 
 
@@ -35,17 +35,17 @@ function App() {
      </Header>
   );
 
-  const content = 
+  const content = (
     <div>
       <Switch>
+        <Route path="/profil/hotele/dodaj">
+          <AddHotel />
+        </Route>
+        
         <AuthenticatedRoute path="/profil" component={Profil} />
-          
+
         <Route path="/hotele/:id">
           <Hotel />
-        </Route>
-
-        <Route path='/profil/hotele/dodaj'>
-          <MyHotels />
         </Route>
 
         <Route path="/wyszukaj/:term?">
@@ -65,6 +65,7 @@ function App() {
         </Route>
       </Switch>
     </div>
+  );
   
   const menu = <Menu />;
   const footer = <Footer />;
