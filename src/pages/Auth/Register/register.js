@@ -2,6 +2,7 @@ import { useState } from "react";
 import LoadingButton from "../../../components/UI/LoadingButton/loadingButton";
 import { validate } from "../../../helpers/validations";
 import Input from "../../../components/Input/input";
+import axios from "axios";
 
 export default function Register(props) {
   const [loading, setLoading] = useState(false);
@@ -23,10 +24,13 @@ export default function Register(props) {
     .map((input) => input.error)
     .filter((error) => error).length;
 
-  const submit = (e) => {
+  const submit = async e => {
     e.preventDefault();
     setLoading(true);
 
+    const res = await axios.post("https://hotel-react-b1c20-default-rtdb.firebaseio.com/users.json", {email: 'kamil@o2.pl', password: '123456',} );
+    console.log(res);
+    
     setTimeout(() => {
       setLoading(false);
     }, 500);
