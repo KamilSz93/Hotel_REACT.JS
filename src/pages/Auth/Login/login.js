@@ -2,6 +2,9 @@ import { useState } from "react";
 import useAuth from '../../../hooks/useAuth';
 import { useHistory } from 'react-router-dom';
 import LoadingButton from "../../../components/UI/LoadingButton/loadingButton";
+import axiosFresh from "axios";
+import useAuth from "../../../hooks/useAuth";
+import { useHistory } from "react-router-dom";
 
 export default function Login(props) {
 
@@ -13,20 +16,29 @@ export default function Login(props) {
   const history = useHistory();
   const [valid, setValid] = useState(null);
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     setLoading(true)
+
+    try {
+      const res = await axiosFresh.post('', {
+        email: '',
+        password:'',
+      })
+    } catch (ex) {
+      console.log(ex.response);
+    }
     
-    setTimeout(()=> {
+    /*setTimeout(()=> {
       if (true) {
         setAuth(true);
         history.push('/');
       } else {
         setValid(false);
         setPassword("");
-      }
-        setLoading(false);
-    }, 500)
+      }  */
+    
+        
   };
 
   return (

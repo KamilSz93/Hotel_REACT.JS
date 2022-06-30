@@ -8,11 +8,6 @@ function Menu() {
 
   const [auth, setAuth] = useAuth();
 
-    const login = (e) => {
-        e.preventDefault(); 
-      setAuth(true)
-    }
-
     const logout = (e) => {
       e.preventDefault();
       setAuth(false)
@@ -47,9 +42,9 @@ function Menu() {
                 </NavLink>
               </li>
               <li className={styles.menuItems}>
-                <a href="#" onClick={login}>
+                <NavLink activeClassName={styles.menuItemActive} to="/zaloguj">
                   Zaloguj
-                </a>
+                </NavLink>
               </li>
             </>
           )}
