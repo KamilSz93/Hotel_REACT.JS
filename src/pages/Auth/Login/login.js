@@ -2,9 +2,7 @@ import { useState } from "react";
 import useAuth from '../../../hooks/useAuth';
 import { useHistory } from 'react-router-dom';
 import LoadingButton from "../../../components/UI/LoadingButton/loadingButton";
-import axiosFresh from "axios";
-import useAuth from "../../../hooks/useAuth";
-import { useHistory } from "react-router-dom";
+import axios from "../../../axios-Auth";
 
 export default function Login(props) {
 
@@ -16,16 +14,30 @@ export default function Login(props) {
   const history = useHistory();
   const [valid, setValid] = useState(null);
 
+  const [error, setError] = useState('');
+
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true)
 
     try {
-      const res = await axiosFresh.post('', {
-        email: '',
-        password:'',
-      })
+      const res = await axios.post('accounts:signInWithPassword',
+        {
+          email,
+          password,
+          returnSecureToken: true,
+        }
+      );
+      console.log(res);
+
+      setAuth( {
+        email: res.data.email,
+        token: res.data.idToken,
+        userId: res.data.localId,
+      });
+      history.push('/');
     } catch (ex) {
+      setError(ex.response.data.error.message);
       console.log(ex.response);
     }
     
@@ -71,6 +83,7 @@ export default function Login(props) {
             className="form-control"
           />
         </div>
+        {error ? <div className="alert alert-danger mt-3">{ error}</div> : null }
         <LoadingButton log={ loading } > Zaloguj </LoadingButton>
       </form>
     </div>

@@ -6,7 +6,7 @@ import ReducerContext from '../../context/reducerContext'
 export default function AuthenticatedRout(props) {
     const context = useContext(ReducerContext)
 
-    return context.state.isAuthenticated
+    return context.state.user
         ? <Route {...props} />
         : <Redirect to="/zaloguj"/>
 } 

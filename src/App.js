@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { BrowserRouter as Router, Route, Routes, Switch, Redirect } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header/header';
@@ -27,6 +27,17 @@ function App() {
 
 
   const [state, dispath] = useReducer(reducer, initialState);
+
+  const checkUser = () => {
+    const tokenData = JSON.parse(window.localStorage.getItem('token-data'));
+    if (tokenData) {
+      dispath({ type: 'login' });
+    }
+  }
+
+  useEffect(() => {
+    checkUser();
+  }, []);
 
    const header = (
      <Header>
@@ -79,8 +90,8 @@ function App() {
     <Router>
       <AuthContext.Provider
         value={{
-          isAuthenticated: state.isAuthenticated,
-          login: () => dispath({ type: "login" }),
+          user: state.user,
+          login: (user) => dispath({ type: "login", user }),
           logout: () => dispath({ type: "logout" }),
         }}
       >
