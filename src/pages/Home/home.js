@@ -6,27 +6,9 @@ import BestHotels from "../../components/Hotels/BestHotels/bestHotels";
 import Hotels from "../../components/Hotels/hotels";
 import ReducerContext from "../../context/reducerContext";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
+import axios from '../../axios';
+import { objectsToArrayWithId } from "../../helpers/objects";
 
-const backendHotels = [
-  {
-    id: 1,
-    name: "Pod akacjami",
-    city: "Warszawa",
-    rating: 6.2,
-    description:
-      "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
-    image: "",
-  },
-  {
-    id: 2,
-    name: "Dębowy",
-    city: "Lublin",
-    rating: 5.9,
-    description:
-      "Aliquip adipisicing veniam quis in est nisi. Eu aliqua deserunt nostrud laborum ut aute. Aliquip labore fugiat ipsum dolor labore magna sunt cillum nulla occaecat fugiat culpa aute occaecat. Est quis mollit veniam tempor adipisicing sint non ut qui id ad culpa minim.",
-    image: "",
-  },
-];
 
 export default function Home(props) {
 
@@ -49,11 +31,21 @@ export default function Home(props) {
   const openHotel = (hotel) => setLastHotel(hotel);
   const removeLastHotel = () => setLastHotel(null);
 
+  const fetchHotels = async () => {
+    try {
+      const res = await axios.get('/hotele.json');
+      const newHotel = objectsToArrayWithId(res.data)
+                      .filter(hotel => hotel.status === 1);
+      setHotels(newHotel)
+      console.log(newHotel);
+    } catch (ex) {
+      console.log(ex.response)
+    }
+    setLoading(false);
+  }
+
   useEffect(() => {
-    setTimeout(() => {
-      setHotels(backendHotels);
-      setLoading(false);
-    }, 1000);
+    fetchHotels();
   }, []);
 
   return loading ? <LoadingIcon/> : (
