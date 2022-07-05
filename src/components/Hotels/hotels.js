@@ -18,7 +18,6 @@ function Hotels(props) {
     const count = useMemo(() => { slowFunction(props.hotels.length) },
     [props.hotels.length]);
     
-    useEffect(() => console.log('hotels render'));
 
     return (
         <div className={`${ styles.container } container`}>

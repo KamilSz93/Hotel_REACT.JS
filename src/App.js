@@ -21,6 +21,7 @@ import Login from './pages/Auth/Login/login';
 import AuthenticatedRoute from './components/AuthenticatedRoute/authenticatedRoute';
 import ErrorBoundary from './hoc/errorBoundary';
 import AddHotel from './pages/Profil/MyHotels/AddHotel/addHotel';
+import EditHotel from "./pages/Profil/MyHotels/EditHotel/editHotel";
 import Register from './pages/Auth/Register/register';
 
 function App() { 
@@ -53,7 +54,11 @@ function App() {
         <Route path="/profil/hotele/dodaj">
           <AddHotel />
         </Route>
-        
+
+        <Route path="/profil/hotele/edytuj/:id">
+          <EditHotel />
+        </Route>
+
         <AuthenticatedRoute path="/profil" component={Profil} />
 
         <Route path="/hotele/:id">
@@ -70,7 +75,7 @@ function App() {
         <Route path="/rejstaracja">
           <Register />
         </Route>
-        
+
         <Route path="/" exact>
           <Home />
         </Route>

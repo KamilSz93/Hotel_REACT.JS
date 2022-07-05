@@ -35,9 +35,9 @@ export default function Home(props) {
     try {
       const res = await axios.get('/hotele.json');
       const newHotel = objectsToArrayWithId(res.data)
-                      .filter(hotel => hotel.status === 1);
+        .filter(hotel => hotel.status == 1);
+      ///brak ścisłego porownania moze być pobierana jako string !!!
       setHotels(newHotel)
-      console.log(newHotel);
     } catch (ex) {
       console.log(ex.response)
     }

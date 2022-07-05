@@ -16,37 +16,60 @@ export default function MyHotels(props) {
       const res = await axios.get("hotele/.json");
 
       const newHotel = objectsToArrayWithId(res.data)
-                       .filter(hotel => hotel.user_Id === auth.userId);
+        .filter(hotel => hotel.user_Id === auth.userId);
+      setHotels(newHotel);
       
     } catch (ex) {
       console.log(ex.responese);
     }
   }
 
-  useEffect(() => {
-    fetchHotel();
-  }, [])
+  const deleteHandler = async id => {
+    try {
+      await axios.delete(`hotele/${id}.json`);
+      setHotels(hotels.filter(x => x.id !== id));
+
+    } catch (ex) {
+      console.log(ex.response)
+    }
+  }
   
 
+  useEffect(() => {
+    fetchHotel();
+  }, []);
+
+  
   return (
     <div>
       {hotels ? (
         <table className="table">
           <thead>
-            <tr>Nazawa</tr>
-            <tr>Opcje</tr>
+            <tr>
+              <th>Nazawa</th>
+              <th>Status</th>
+              <th>Opcje</th>
+            </tr>
           </thead>
           <tbody>
-            {hotels.map(hotel => (
+            {hotels.map((hotel) => (
               <tr>
                 <td>{hotel.name}</td>
+                <td>{hotel.status == 1 ? (<span className='badge bg-success '>Aktywny</span>)
+                                       : (<span className='badge bg-danger'>Nie aktywny</span>)}
+                </td>
                 <td>
-                  <button className="btn btn-warning">Edytuj</button>
-                  <button className=" ms-2 btn btn-danger">Edytuj</button>
+                  <Link to={`/profil/hotele/edytuj/${hotel.id}`} className="btn btn-warning">
+                    Edytuj
+                  </Link>
+                  <button
+                    className=" ms-2 btn btn-danger"
+                    onClick={() => deleteHandler(hotel.id)}>
+                    Usuń
+                  </button>
                 </td>
               </tr>
             ))}
-            
           </tbody>
         </table>
       ) : (
