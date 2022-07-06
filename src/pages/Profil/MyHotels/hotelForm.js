@@ -7,6 +7,10 @@ import Input from "../../../components/Input/input";
 import LoadingButton from "../../../components/UI/LoadingButton/loadingButton";
 
 const HotelForm = (props) => {
+  
+  const [loading, setLoading] = useState(false);
+
+  const [auth, setAuth] = useAuth();
 
   const history = useHistory();
 
@@ -53,10 +57,19 @@ const HotelForm = (props) => {
     },
   });
     
-  const [loading, setLoading] = useState(false);
+  const changeHandler = (value, fieldName) => {
+    const error = validate(form[fieldName].rules, value);
 
-    const [auth, setAuth] = useAuth();
-
+    setForm({
+      ...form,
+      [fieldName]: {
+        ...form[fieldName],
+        value,
+        showError: true,
+        error: error,
+      },
+    });
+  };
 
   const submit = async (e) => {
     e.preventDefault();
@@ -79,27 +92,15 @@ const HotelForm = (props) => {
     setLoading(false);
   };
 
-  const changeHandler = (value, fieldName) => {
-    const error = validate(form[fieldName].rules, value);
-
-    setForm({
-      ...form,
-      [fieldName]: {
-        ...form[fieldName],
-        value,
-        showError: true,
-        error: error,
-      },
-    });
-  };
-
     useEffect(() => {
-        const newForm = { ...form };
+      const newForm = { ...form };
+      console.log(newForm);
+      console.log(props.hotel);
         for (const key in props.hotel) {
             newForm[key].value = props.hotel[key];
         }
-    0    setForm(newForm)
-    }, [props.hotel]);
+       setForm(newForm)
+    }, []);
 
   return (
     <form onSubmit={submit}>

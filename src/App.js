@@ -51,12 +51,12 @@ function App() {
   const content = (
     <div>
       <Switch>
-        <Route path="/profil/hotele/dodaj">
-          <AddHotel />
-        </Route>
-
         <Route path="/profil/hotele/edytuj/:id">
           <EditHotel />
+        </Route>
+        
+        <Route path="/profil/hotele/dodaj">
+          <AddHotel />
         </Route>
 
         <AuthenticatedRoute path="/profil" component={Profil} />

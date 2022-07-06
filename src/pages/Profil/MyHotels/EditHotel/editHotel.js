@@ -1,43 +1,32 @@
-import { useEffect, useRef, useState } from "react";
-import LoadingButton from "../../../../components/UI/LoadingButton/loadingButton";
-import Input from "../../../../components/Input/input";
-import { validate } from "../../../../helpers/validations";
+import { useEffect , useState } from "react";
 import axios from "../../../../axios";
 import { useHistory } from "react-router-dom";
-import useAuth from "../../../../hooks/useAuth";
 import HotelForm from "../hotelForm";
 import { useParams } from "react-router-dom";
 
 
-const EditHotel = (props) => {
+const EditHotel = props => {
 
-const { id } = useParams();
-
-const [auth, setAuth] = useAuth();
- 
-  const [loading, setLoading] = useState(false);
-  
-  const [hotel, setHotel] = useState(null);
-
+const { id } = useParams();  
+const [hotel, setHotel] = useState(null);
 const history = useHistory();
 
 const submit = async form => {
-      
-   await axios.post("hotele/.json", form);
+  await axios.put(`/hotele/${id}.json`, form);
   history.push("/profil/hotele");
-  
-   setLoading(false);
   };
 
   const fetchHotel = async () => {
-   const res =  await axios.get(`hotele/${id}.json`)
-    console.log(res.data);
-    setHotel(res.data)
+    const res =  await axios.get(`/hotele/${id}.json`)
+    const hotelData = res.data;
+    delete (hotelData.user_id);
+
+    setHotel(hotelData)
   }
   
   useEffect(() => {
     fetchHotel();
-  },[])
+  }, []);
 
  
 return (
