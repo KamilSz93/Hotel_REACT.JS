@@ -16,8 +16,9 @@ export default function MyHotels(props) {
       const res = await axios.get("hotele/.json");
 
       const newHotel = objectsToArrayWithId(res.data)
-        .filter(hotel => hotel.user_Id === auth.userId);
-      setHotels(newHotel);
+        .filter(hotel => hotel.user_id === auth.userId);
+        
+        setHotels(newHotel);
       
     } catch (ex) {
       console.log(ex.responese);

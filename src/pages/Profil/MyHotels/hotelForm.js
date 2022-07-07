@@ -1,19 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { validate } from "../../../helpers/validations";
-import axios from "../../../axios";
-import useAuth from "../../../hooks/useAuth";
 import Input from "../../../components/Input/input";
+import { validate } from "../../../helpers/validations";
+import useAuth from "../../../hooks/useAuth";
+import { useEffect, useState } from "react";
 import LoadingButton from "../../../components/UI/LoadingButton/loadingButton";
 
 const HotelForm = (props) => {
-  
+  const [auth] = useAuth();
   const [loading, setLoading] = useState(false);
-
-  const [auth, setAuth] = useAuth();
-
-  const history = useHistory();
-
   const [form, setForm] = useState({
     name: {
       value: "",
@@ -56,10 +49,9 @@ const HotelForm = (props) => {
       rules: ["required"],
     },
   });
-    
+
   const changeHandler = (value, fieldName) => {
     const error = validate(form[fieldName].rules, value);
-
     setForm({
       ...form,
       [fieldName]: {
@@ -70,21 +62,20 @@ const HotelForm = (props) => {
       },
     });
   };
-
   const submit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
-    try {
-        props.onSubmit({
-          name: form.name.value,
-          description: form.description.value,
-          city: form.city.value,
-          rooms: form.rooms.value,
-          features: form.features.value,
-          status: form.status.value,
-          user_Id: auth.userId,
-        });
+     try {
+      props.onSubmit({
+        name: form.name.value,
+        description: form.description.value,
+        city: form.city.value,
+        rooms: form.rooms.value,
+        features: form.features.value,
+        status: form.status.value,
+        user_id: auth.userId,
+      });
     } catch (ex) {
       console.log(ex.response);
     }
@@ -92,15 +83,14 @@ const HotelForm = (props) => {
     setLoading(false);
   };
 
-    useEffect(() => {
-      const newForm = { ...form };
-      console.log(newForm);
-      console.log(props.hotel);
-        for (const key in props.hotel) {
-            newForm[key].value = props.hotel[key];
-        }
-       setForm(newForm)
-    }, []);
+  useEffect(() => {
+    const newForm = { ...form };
+    console.log(props.hotel)
+    for (const key in props.hotel) {
+      newForm[key].value = props.hotel[key];
+    }
+    setForm(newForm);
+  }, [props.hotel]);
 
   return (
     <form onSubmit={submit}>
@@ -179,13 +169,13 @@ const HotelForm = (props) => {
         error={form.status.error}
         showError={form.status.showError}
       />
-      
-        <div className="text-right">
-            <LoadingButton loading={loading} className="btn-success">
-              {props.buttonText}
-            </LoadingButton>
-          </div>
-        </form>
+
+      <div className="text-right">
+        <LoadingButton loading={loading} className="btn-success">
+          {props.buttonText}!
+        </LoadingButton>
+      </div>
+    </form>
   );
 };
 

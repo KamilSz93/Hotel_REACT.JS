@@ -1,7 +1,4 @@
-import { useRef, useState } from "react";
-import LoadingButton from "../../../../components/UI/LoadingButton/loadingButton";
-import Input from "../../../../components/Input/input";
-import { validate } from "../../../../helpers/validations";
+import { useState } from "react";
 import axios from "../../../../axios";
 import { useHistory } from "react-router-dom";
 import useAuth from "../../../../hooks/useAuth";
@@ -10,12 +7,11 @@ import HotelForm from "../hotelForm";
 
 const AddHotel = (props) => {
 
-  
 const [auth, setAuth] = useAuth();
  
-  const [loading, setLoading] = useState(false);
+const [loading, setLoading] = useState(false);
 
-  const history = useHistory();
+const history = useHistory();
 
     const submit = async form => {
       
