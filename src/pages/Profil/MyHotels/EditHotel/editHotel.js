@@ -33,7 +33,7 @@ const EditHotel = (props) => {
 
   return (
     <div className="card">
-      <div className="card-header">Edytuj hotel</div>
+      <div className="card-header fs-3 fw-bold">Edytuj hotel</div>
       <div className="card-body">
         <p className="text-muted">Uzupełnij dane hotelu</p>
 

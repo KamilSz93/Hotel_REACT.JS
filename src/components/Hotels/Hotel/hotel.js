@@ -32,7 +32,11 @@ return (
       <div className="row">
         <div className="col-4">
           {props.missign}
-          <img src={hotelImg} alt="" className="img-fluid img-thumbnail" />
+          <img
+            src={`http://placeimg.com/220/18${Math.floor(Math.random()*10)}/any`}
+            alt=""
+            className="img-fluid img-thumbnail"
+          />
         </div>
         <div className="col-8">
           <div className="row">
@@ -41,14 +45,15 @@ return (
               <span className="badge bg-light text-dark">{props.city}</span>
             </div>
             <div className="col text-end">
-              <h5>Ocena: {props.rating ?? 0 }</h5>
-              
-             <Link 
-                    onClick={clickHandler}
-                    to={`/hotele/${props.id}`}
-                    className={`btn btn-${theme.color} mt-2 px-4`}>
-                    Pokaż
-                  </Link>
+              <h5>Ocena: {props.rating ?? 0}</h5>
+
+              <Link
+                onClick={clickHandler}
+                to={`/hotele/${props.id}`}
+                className={`btn btn-${theme.color} mt-2 px-4`}
+              >
+                Pokaż
+              </Link>
             </div>
           </div>
         </div>
@@ -58,7 +63,7 @@ return (
         </div>
 
         {auth ? (
-          <p className="mt-2">Dostepność: { props.rooms} pokoje </p>
+          <p className="mt-2">Dostepność: {props.rooms} pokoje </p>
         ) : (
           <p className="mt-2">Dostepność: Zaloguj sie</p>
         )}

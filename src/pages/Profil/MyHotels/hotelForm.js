@@ -74,7 +74,7 @@ const HotelForm = (props) => {
         rooms: form.rooms.value,
         features: form.features.value,
         status: form.status.value,
-        user_id: auth.userId,
+        user_id: auth.userId,    
       });
     } catch (ex) {
       console.log(ex.response);
@@ -85,7 +85,6 @@ const HotelForm = (props) => {
 
   useEffect(() => {
     const newForm = { ...form };
-    console.log(props.hotel)
     for (const key in props.hotel) {
       newForm[key].value = props.hotel[key];
     }

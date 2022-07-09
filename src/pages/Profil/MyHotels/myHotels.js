@@ -46,7 +46,7 @@ export default function MyHotels(props) {
       {hotels ? (
         <table className="table">
           <thead>
-            <tr>
+            <tr key={1}>
               <th>Nazawa</th>
               <th>Status</th>
               <th>Opcje</th>
@@ -54,7 +54,7 @@ export default function MyHotels(props) {
           </thead>
           <tbody>
             {hotels.map((hotel) => (
-              <tr>
+              <tr key={hotel.name}>
                 <td>{hotel.name}</td>
                 <td>{hotel.status == 1 ? (<span className='badge bg-success '>Aktywny</span>)
                                        : (<span className='badge bg-danger'>Nie aktywny</span>)}
