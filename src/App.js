@@ -26,7 +26,6 @@ import Register from './pages/Auth/Register/register';
 
 function App() { 
 
-
   const [state, dispath] = useReducer(reducer, initialState);
 
   const checkUser = () => {
