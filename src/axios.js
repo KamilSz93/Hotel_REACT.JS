@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "https://hotel-react-b1c20-default-rtdb.firebaseio.com",
+  baseURL:"https://hotels-react-156ed-default-rtdb.europe-west1.firebasedatabase.app/",
 });
 
 export default instance;
