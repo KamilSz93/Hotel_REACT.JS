@@ -1,50 +1,49 @@
-import { useEffect, useReducer } from 'react';
-import { BrowserRouter as Router, Route, Routes, Switch, Redirect } from 'react-router-dom';
-import './App.css';
-import Header from './components/Header/header';
+import { useEffect, useReducer } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import "./App.css";
+import Header from "./components/Header/header";
 import Menu from "./components/Menu/menu";
-import SearchBar from './components/UI/SearchBar/searchBar'
-import Layout from './components/Layout/layout'
-import Footer from './components/Footer/footer'
-import ButtonTheme from './components/UI/ButtonTheme/buttonTheme';
-import ThemeContext from './context/themeContext';
-import AuthContext from './context/authContext';
+import SearchBar from "./components/UI/SearchBar/searchBar";
+import Layout from "./components/Layout/layout";
+import Footer from "./components/Footer/footer";
+import ButtonTheme from "./components/UI/ButtonTheme/buttonTheme";
+import ThemeContext from "./context/themeContext";
+import AuthContext from "./context/authContext";
 import ReducerContext from "./context/reducerContext";
-import InsporingQuote from './components/InsporingQuote/insporingQuote';
-import { reducer, initialState } from './reducer';
-import Home from './pages/Home/home';
-import Hotel from './pages/Hotel/hotel';
-import Search from './pages/Search/search';
-import Profil from './pages/Profil/profil';
-import NotFound from './pages/404/404';
-import Login from './pages/Auth/Login/login';
-import AuthenticatedRoute from './components/AuthenticatedRoute/authenticatedRoute';
-import ErrorBoundary from './hoc/errorBoundary';
-import AddHotel from './pages/Profil/MyHotels/AddHotel/addHotel';
+import InsporingQuote from "./components/InsporingQuote/insporingQuote";
+import { reducer, initialState } from "./reducer";
+import Home from "./pages/Home/home";
+import Hotel from "./pages/Hotel/hotel";
+import Search from "./pages/Search/search";
+import Profil from "./pages/Profil/profil";
+import NotFound from "./pages/404/404";
+import Login from "./pages/Auth/Login/login";
+import AuthenticatedRoute from "./components/AuthenticatedRoute/authenticatedRoute";
+import ErrorBoundary from "./hoc/errorBoundary";
+import AddHotel from "./pages/Profil/MyHotels/AddHotel/addHotel";
 import EditHotel from "./pages/Profil/MyHotels/EditHotel/editHotel";
-import Register from './pages/Auth/Register/register';
+import Register from "./pages/Auth/Register/register";
 
-function App() { 
-
+function App() {
   const [state, dispath] = useReducer(reducer, initialState);
 
   const checkUser = () => {
-    const tokenData = JSON.parse(window.localStorage.getItem('token-data'));
+    const tokenData = JSON.parse(window.localStorage.getItem("token-data"));
     if (tokenData) {
-      dispath({ type: 'login' });
+      dispath({ type: "login" });
     }
-  }
+  };
 
   useEffect(() => {
     checkUser();
   }, []);
 
-   const header = (
-     <Header>
-       <InsporingQuote />
-       <SearchBar />
-       <ButtonTheme />
-     </Header>
+  const header = (
+    <Header>
+      <InsporingQuote />
+      <SearchBar />
+      <ButtonTheme />
+    </Header>
   );
 
   const content = (
@@ -53,7 +52,7 @@ function App() {
         <Route path="/profil/hotele/edytuj/:id">
           <EditHotel />
         </Route>
-        
+
         <Route path="/profil/hotele/dodaj">
           <AddHotel />
         </Route>
@@ -85,7 +84,7 @@ function App() {
       </Switch>
     </div>
   );
-  
+
   const menu = <Menu />;
   const footer = <Footer />;
 
@@ -104,10 +103,12 @@ function App() {
             changeTheme: () => dispath({ type: "change-theme" }),
           }}
         >
-          <ReducerContext.Provider value={{
-            state: state,
-            dispath:dispath,
-          }}>
+          <ReducerContext.Provider
+            value={{
+              state: state,
+              dispath: dispath,
+            }}
+          >
             <ErrorBoundary>
               <Layout
                 header={header}

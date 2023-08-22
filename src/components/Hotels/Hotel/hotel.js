@@ -33,7 +33,7 @@ return (
         <div className="col-4">
           {props.missign}
           <img
-            src={`http://placeimg.com/220/18${Math.floor(Math.random()*10)}/any`}
+            src={hotelImg}
             alt=""
             className="img-fluid img-thumbnail"
           />

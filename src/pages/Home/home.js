@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import LastHotel from "../../components/Hotels/LastHotel/lastHotel";
 import useStateStorage from "../../hooks/useStateStorage";
 import useWebsiteTitle from "../../hooks/useWebsiteTitle";
@@ -6,12 +6,10 @@ import BestHotels from "../../components/Hotels/BestHotels/bestHotels";
 import Hotels from "../../components/Hotels/hotels";
 import ReducerContext from "../../context/reducerContext";
 import LoadingIcon from "../../components/UI/LoadingIcon/LoadingIcon";
-import axios from '../../axios';
+import axios from "../../axios";
 import { objectsToArrayWithId } from "../../helpers/objects";
 
-
 export default function Home(props) {
-
   const [lastHotel, setLastHotel] = useStateStorage("Last Hotel", null);
   const reducer = useContext(ReducerContext);
 
@@ -33,25 +31,29 @@ export default function Home(props) {
 
   const fetchHotels = async () => {
     try {
-      const res = await axios.get('/hotele.json');
-      const newHotel = objectsToArrayWithId(res.data)
-        .filter(hotel => hotel.status == 1);
+      const res = await axios.get("/hotele.json");
+      const newHotel = objectsToArrayWithId(res.data).filter(
+        (hotel) => hotel.status == 1
+      );
       ///brak ścisłego porownania moze być pobierana jako string !!!
-      setHotels(newHotel)
+      setHotels(newHotel);
     } catch (ex) {
-      console.log(ex.response)
+      console.log(ex.response);
     }
     setLoading(false);
-  }
+  };
 
   useEffect(() => {
     fetchHotels();
   }, []);
 
-  return loading ? <LoadingIcon/> : (
+  return loading ? (
+    <LoadingIcon />
+  ) : (
     <>
-      { lastHotel ? <LastHotel {...lastHotel} onRemove={removeLastHotel} />
-       : null }
+      {lastHotel ? (
+        <LastHotel {...lastHotel} onRemove={removeLastHotel} />
+      ) : null}
       {getBestHotel() ? <BestHotels getHotel={getBestHotel} /> : null}
       <Hotels onOpen={openHotel} hotels={hotels} />
     </>
